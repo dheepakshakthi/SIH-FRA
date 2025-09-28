@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Support System - FRA Eligibility Assessment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dss.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header compact">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                    <h1>Decision Support System</h1>
+                    <p>AI-powered FRA Eligibility Assessment</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="showGuidelines()">
+                        <i class="fas fa-book"></i> Guidelines
+                    </button>
+                    <button class="btn btn-outline" onclick="showBatchAssessment()">
+                        <i class="fas fa-list"></i> Batch Assessment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="dss-container">
+        <div class="container">
+            <!-- Assessment Form -->
+            <div class="assessment-section" id="assessmentSection">
+                <div class="assessment-header">
+                    <h2>FRA Eligibility Assessment</h2>
+                    <p>Complete the form below to assess eligibility for Forest Rights Act benefits</p>
+                </div>
+
+                <form id="assessmentForm" class="assessment-form">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-user"></i> Personal Information</h3>
+                            <div class="section-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-text">0% Complete</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="applicantName">Applicant Name *</label>
+                                <input type="text" id="applicantName" name="name" required class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fatherName">Father's/Husband's Name</label>
+                                <input type="text" id="fatherName" name="father_name" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="village">Village *</label>
+                                <input type="text" id="village" name="village" required class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="district">District *</label>
+                                <select id="district" name="district" required class="form-control">
+                                    <option value="">Select District</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="communityType">Community Type *</label>
+                                <select id="communityType" name="community_type" required class="form-control">
+                                    <option value="">Select Community Type</option>
+                                    <option value="Scheduled Tribes">Scheduled Tribes (ST)</option>
+                                    <option value="Other Traditional Forest Dwellers">Other Traditional Forest Dwellers (OTFD)</option>
+                                    <option value="Primitive Tribal Groups">Primitive Tribal Groups (PTG)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="residenceSince">Residing Since (Year) *</label>
+                                <input type="number" id="residenceSince" name="residence_since" min="1900" max="2005" required class="form-control">
+                                <small class="form-hint">Must be before 2005 (FRA cut-off date)</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Land Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-map"></i> Land Information</h3>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="landType">Land Type</label>
+                                <select id="landType" name="land_type" class="form-control">
+                                    <option value="">Select Land Type</option>
+                                    <option value="Forest Land">Forest Land</option>
+                                    <option value="Assigned Land">Assigned Land</option>
+                                    <option value="Government Land in Forest Areas">Government Land in Forest Areas</option>
+                                    <option value="Revenue Land">Revenue Land</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="landUse">Current Land Use</label>
+                                <select id="landUse" name="land_use" class="form-control">
+                                    <option value="">Select Land Use</option>
+                                    <option value="Agriculture">Agriculture</option>
+                                    <option value="Settlement">Settlement</option>
+                                    <option value="Grazing">Grazing</option>
+                                    <option value="Mixed Use">Mixed Use</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="surveyNumber">Survey Number</label>
+                                <input type="text" id="surveyNumber" name="survey_number" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="areaAcres">Area (in Acres)</label>
+                                <input type="number" id="areaAcres" name="area_acres" step="0.01" min="0" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Livelihood Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-seedling"></i> Livelihood & Forest Dependence</h3>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="primaryOccupation">Primary Occupation *</label>
+                                <select id="primaryOccupation" name="primary_occupation" required class="form-control">
+                                    <option value="">Select Primary Occupation</option>
+                                    <option value="Forest produce collection">Forest Produce Collection</option>
+                                    <option value="Agriculture in forest">Agriculture in Forest Areas</option>
+                                    <option value="Cattle grazing">Cattle Grazing</option>
+                                    <option value="Honey collection">Honey Collection</option>
+                                    <option value="Medicinal plants">Medicinal Plants Collection</option>
+                                    <option value="Bamboo collection">Bamboo Collection</option>
+                                    <option value="Tendu leaf collection">Tendu Leaf Collection</option>
+                                    <option value="Other forest-based">Other Forest-based Activity</option>
+                                    <option value="Non-forest">Non-forest Activity</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="secondaryOccupation">Secondary Occupation</label>
+                                <select id="secondaryOccupation" name="secondary_occupation" class="form-control">
+                                    <option value="">Select Secondary Occupation</option>
+                                    <option value="Forest produce collection">Forest Produce Collection</option>
+                                    <option value="Agriculture">Agriculture</option>
+                                    <option value="Animal husbandry">Animal Husbandry</option>
+                                    <option value="Handicrafts">Handicrafts</option>
+                                    <option value="Daily wage">Daily Wage Labor</option>
+                                    <option value="None">None</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label>Forest-based Activities (Select all applicable)</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="forest_activities" value="NTFP Collection">
+                                        <span class="checkmark"></span>
+                                        Non-Timber Forest Products (NTFP) Collection
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="forest_activities" value="Fuel wood">
+                                        <span class="checkmark"></span>
+                                        Fuel Wood Collection
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="forest_activities" value="Medicinal plants">
+                                        <span class="checkmark"></span>
+                                        Medicinal Plants Collection
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="forest_activities" value="Grazing">
+                                        <span class="checkmark"></span>
+                                        Cattle/Goat Grazing
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="forest_activities" value="Fishing">
+                                        <span class="checkmark"></span>
+                                        Fishing in Forest Streams
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="forest_activities" value="Honey collection">
+                                        <span class="checkmark"></span>
+                                        Honey Collection
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documentation -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-file-alt"></i> Documentation</h3>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Available Documents (Select all available)</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="documents" value="residence_proof">
+                                        <span class="checkmark"></span>
+                                        Residence Proof (Ration Card, Voter ID, etc.)
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="documents" value="community_certificate">
+                                        <span class="checkmark"></span>
+                                        ST/OTFD Certificate
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="documents" value="land_records">
+                                        <span class="checkmark"></span>
+                                        Land Records/Survey Settlement
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="documents" value="forest_dependence_proof">
+                                        <span class="checkmark"></span>
+                                        Forest Dependence Evidence
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="documents" value="community_resolution">
+                                        <span class="checkmark"></span>
+                                        Gram Sabha Resolution
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="documents" value="identity_proof">
+                                        <span class="checkmark"></span>
+                                        Identity Proof Documents
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Community Support -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-users"></i> Community Support</h3>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Gram Sabha Resolution Obtained?</label>
+                                <div class="radio-group">
+                                    <label class="radio-label">
+                                        <input type="radio" name="gram_sabha_resolution" value="true">
+                                        <span class="radio-mark"></span>
+                                        Yes
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="gram_sabha_resolution" value="false">
+                                        <span class="radio-mark"></span>
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="communitySupportLetters">Community Support Letters</label>
+                                <input type="number" id="communitySupportLetters" name="community_support_letters" min="0" class="form-control">
+                                <small class="form-hint">Number of support letters from community members</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="resetForm()">
+                            <i class="fas fa-undo"></i> Reset Form
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="saveAsDraft()">
+                            <i class="fas fa-save"></i> Save as Draft
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-brain"></i> Assess Eligibility
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Assessment Results -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2>Assessment Results</h2>
+                    <div class="results-actions">
+                        <button class="btn btn-outline" onclick="printResults()">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                        <button class="btn btn-outline" onclick="downloadPDF()">
+                            <i class="fas fa-file-pdf"></i> Download PDF
+                        </button>
+                        <button class="btn btn-primary" onclick="startNewAssessment()">
+                            <i class="fas fa-plus"></i> New Assessment
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-content">
+                    <!-- Overall Score -->
+                    <div class="score-card">
+                        <div class="score-circle">
+                            <div class="score-value" id="overallScore">0</div>
+                            <div class="score-max">/100</div>
+                        </div>
+                        <div class="score-info">
+                            <h3 id="eligibilityStatus">Assessing...</h3>
+                            <p id="eligibilityDescription">Please wait while we assess the eligibility...</p>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Scores -->
+                    <div class="detailed-scores">
+                        <h4>Detailed Assessment</h4>
+                        <div class="criteria-scores" id="criteriaScores">
+                            <!-- Criteria scores will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="assessmentChart"></canvas>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="recommendations-section">
+                        <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                        <div class="recommendations-list" id="recommendationsList">
+                            <!-- Recommendations will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Missing Documents -->
+                    <div class="missing-documents-section">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Missing Documents</h4>
+                        <div class="missing-documents-list" id="missingDocumentsList">
+                            <!-- Missing documents will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div class="next-steps-section">
+                        <h4><i class="fas fa-list-ol"></i> Next Steps</h4>
+                        <div class="next-steps-list" id="nextStepsList">
+                            <!-- Next steps will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guidelines Modal -->
+    <div id="guidelinesModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>FRA Eligibility Guidelines</h3>
+                <span class="close" onclick="closeGuidelines()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="guidelines-content">
+                    <div class="guideline-section">
+                        <h4>Eligibility Criteria</h4>
+                        <ul>
+                            <li><strong>Community Type:</strong> Must be Scheduled Tribes (ST) or Other Traditional Forest Dwellers (OTFD)</li>
+                            <li><strong>Residence Period:</strong> Must be residing in forest areas for at least 75 years (before 2005)</li>
+                            <li><strong>Forest Dependence:</strong> Primary livelihood should be dependent on forest resources</li>
+                            <li><strong>Land Use:</strong> Land should be in forest areas and used for habitation or cultivation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guideline-section">
+                        <h4>Required Documents</h4>
+                        <ul>
+                            <li>Residence proof (Ration card, Voter ID, etc.)</li>
+                            <li>ST/OTFD certificate from competent authority</li>
+                            <li>Land records and survey settlement documents</li>
+                            <li>Evidence of forest dependence for livelihood</li>
+                            <li>Gram Sabha resolution supporting the claim</li>
+                            <li>Identity proof and recent photographs</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="guideline-section">
+                        <h4>Assessment Process</h4>
+                        <ol>
+                            <li>Complete the eligibility assessment form</li>
+                            <li>Submit to Sub-Divisional Level Committee (SDLC)</li>
+                            <li>Field verification by committee members</li>
+                            <li>Review by District Level Committee (DLC)</li>
+                            <li>Final approval and title deed issuance</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Batch Assessment Modal -->
+    <div id="batchModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Batch Assessment</h3>
+                <span class="close" onclick="closeBatchModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="batch-upload-area">
+                    <div class="upload-icon">
+                        <i class="fas fa-file-excel"></i>
+                    </div>
+                    <h4>Upload Batch File</h4>
+                    <p>Upload Excel/CSV file with multiple applications for batch processing</p>
+                    <input type="file" id="batchFileInput" accept=".csv,.xlsx,.xls" style="display: none;">
+                    <button class="btn btn-primary" onclick="document.getElementById('batchFileInput').click()">
+                        <i class="fas fa-upload"></i> Choose File
+                    </button>
+                </div>
+                
+                <div class="batch-template">
+                    <h5>Template Download</h5>
+                    <p>Download the template file to ensure proper format</p>
+                    <button class="btn btn-outline" onclick="downloadTemplate()">
+                        <i class="fas fa-download"></i> Download Template
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dss.js') }}"></script>
+</body>
+</html>

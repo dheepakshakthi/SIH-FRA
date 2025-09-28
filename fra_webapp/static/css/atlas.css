@@ -1,0 +1,568 @@
+/* Atlas Page Specific Styles */
+
+.atlas-container {
+    display: flex;
+    height: calc(100vh - 120px);
+    background-color: #f8f9fa;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 400px;
+    background: white;
+    border-right: 1px solid #e9ecef;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+    z-index: 100;
+}
+
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.3rem;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+/* Panels */
+.panel {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.panel-header {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.panel-header:hover {
+    background: #e9ecef;
+}
+
+.panel-header h4 {
+    margin: 0;
+    color: #333;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.panel-header i {
+    margin-right: 10px;
+    color: #d73527;
+}
+
+.panel-content {
+    padding: 20px;
+}
+
+/* Filter Controls */
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: #d73527;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-actions .btn {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Legend */
+.legend-section {
+    margin-bottom: 25px;
+}
+
+.legend-section h5 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.legend-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Legend Icons */
+.beneficiary-approved { background-color: #28a745; }
+.beneficiary-pending { background-color: #ffc107; }
+.beneficiary-rejected { background-color: #dc3545; }
+.potential-high { background-color: #d73527; }
+.potential-medium { background-color: #fd7e14; }
+.potential-low { background-color: #6c757d; }
+.forest-dense { background-color: #155724; }
+.forest-moderate { background-color: #28a745; }
+.forest-sparse { background-color: #6f9a37; }
+
+/* Statistics Cards */
+.stat-card {
+    background: linear-gradient(135deg, #d73527 0%, #b52d20 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Layer Controls */
+.layer-control {
+    margin-bottom: 15px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    position: relative;
+    padding-left: 30px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label:hover input ~ .checkmark {
+    background-color: #f0f0f0;
+    border-color: #d73527;
+}
+
+.checkbox-label input:checked ~ .checkmark {
+    background-color: #d73527;
+    border-color: #d73527;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-label input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-label .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Map Container */
+.map-container {
+    flex: 1;
+    position: relative;
+    background: #e9ecef;
+}
+
+.map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Map Controls */
+.map-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
+
+.map-control-btn {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.map-control-btn:hover {
+    background: #f8f9fa;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+
+/* Map Search */
+.map-search {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    z-index: 10;
+    width: 300px;
+}
+
+.map-search input {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.map-search button {
+    padding: 12px 15px;
+    background: #d73527;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.map-search button:hover {
+    background: #b52d20;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 20;
+}
+
+.loading-indicator .spinner {
+    width: 40px;
+    height: 40px;
+}
+
+.loading-indicator span {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Info Panel */
+.info-panel {
+    position: fixed;
+    top: 50%;
+    right: -400px;
+    transform: translateY(-50%);
+    width: 380px;
+    max-height: 80vh;
+    background: white;
+    border-radius: 15px 0 0 15px;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+    transition: right 0.3s ease;
+    z-index: 1000;
+}
+
+.info-panel.active {
+    right: 0;
+}
+
+.info-panel-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #d73527 0%, #b52d20 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-panel-header h4 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.info-panel-content {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(80vh - 80px);
+}
+
+/* Popup Styles */
+.mapboxgl-popup {
+    max-width: 300px;
+}
+
+.mapboxgl-popup-content {
+    padding: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.popup-header {
+    background: linear-gradient(135deg, #d73527 0%, #b52d20 100%);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.popup-type {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.popup-body {
+    padding: 15px;
+}
+
+.popup-field {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.popup-field label {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.popup-field span {
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.popup-actions {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+.popup-actions .btn {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 350px;
+    }
+    
+    .map-search {
+        width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .atlas-container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 400px;
+        order: 2;
+    }
+    
+    .map-container {
+        height: 60vh;
+        order: 1;
+    }
+    
+    .map-search {
+        position: relative;
+        width: calc(100% - 40px);
+        margin: 20px;
+        top: 0;
+        left: 0;
+    }
+    
+    .map-controls {
+        top: 80px;
+    }
+    
+    .info-panel {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+        transform: none;
+    }
+    
+    .info-panel.active {
+        right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-header {
+        padding: 15px;
+    }
+    
+    .panel-content {
+        padding: 15px;
+    }
+    
+    .filter-actions {
+        flex-direction: column;
+    }
+    
+    .stat-card {
+        padding: 15px;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .map-controls {
+        flex-direction: row;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .map-control-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+}

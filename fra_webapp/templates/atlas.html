@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRA Atlas - Interactive Mapping Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/atlas.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header compact">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                    <h1>FRA Atlas - Interactive Mapping</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="toggleLegend()">
+                        <i class="fas fa-layer-group"></i> Legend
+                    </button>
+                    <button class="btn btn-outline" onclick="toggleFilters()">
+                        <i class="fas fa-filter"></i> Filters
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="atlas-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Atlas Controls</h3>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Filters Panel -->
+            <div class="panel" id="filtersPanel">
+                <div class="panel-header">
+                    <h4><i class="fas fa-filter"></i> Filters</h4>
+                </div>
+                <div class="panel-content">
+                    <div class="filter-group">
+                        <label>District</label>
+                        <select id="districtFilter" onchange="applyFilters()">
+                            <option value="">All Districts</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Claim Type</label>
+                        <select id="claimTypeFilter" onchange="applyFilters()">
+                            <option value="">All Types</option>
+                            <option value="Individual Forest Rights">Individual Forest Rights</option>
+                            <option value="Community Forest Rights">Community Forest Rights</option>
+                            <option value="Community Forest Resource Rights">Community Forest Resource Rights</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <select id="statusFilter" onchange="applyFilters()">
+                            <option value="">All Status</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Under Review">Under Review</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Community Type</label>
+                        <select id="communityTypeFilter" onchange="applyFilters()">
+                            <option value="">All Communities</option>
+                            <option value="Scheduled Tribes">Scheduled Tribes</option>
+                            <option value="Other Traditional Forest Dwellers">Other Traditional Forest Dwellers</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm" onclick="applyFilters()">Apply Filters</button>
+                        <button class="btn btn-outline btn-sm" onclick="clearFilters()">Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend Panel -->
+            <div class="panel" id="legendPanel">
+                <div class="panel-header">
+                    <h4><i class="fas fa-layer-group"></i> Map Legend</h4>
+                </div>
+                <div class="panel-content">
+                    <div class="legend-section">
+                        <h5>Beneficiaries</h5>
+                        <div class="legend-item">
+                            <div class="legend-icon beneficiary-approved"></div>
+                            <span>Approved Claims</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon beneficiary-pending"></div>
+                            <span>Pending Claims</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon beneficiary-rejected"></div>
+                            <span>Rejected Claims</span>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-section">
+                        <h5>Potential Areas</h5>
+                        <div class="legend-item">
+                            <div class="legend-icon potential-high"></div>
+                            <span>High Priority</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon potential-medium"></div>
+                            <span>Medium Priority</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon potential-low"></div>
+                            <span>Low Priority</span>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-section">
+                        <h5>Forest Cover</h5>
+                        <div class="legend-item">
+                            <div class="legend-icon forest-dense"></div>
+                            <span>Dense Forest (>70%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon forest-moderate"></div>
+                            <span>Moderate Forest (40-70%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon forest-sparse"></div>
+                            <span>Sparse Forest (<40%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Panel -->
+            <div class="panel" id="statisticsPanel">
+                <div class="panel-header">
+                    <h4><i class="fas fa-chart-bar"></i> Statistics</h4>
+                </div>
+                <div class="panel-content">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalBeneficiaries">0</div>
+                        <div class="stat-label">Total Beneficiaries</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="approvedClaims">0</div>
+                        <div class="stat-label">Approved Claims</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="pendingClaims">0</div>
+                        <div class="stat-label">Pending Claims</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalArea">0</div>
+                        <div class="stat-label">Total Area (Acres)</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="potentialAreas">0</div>
+                        <div class="stat-label">Potential Areas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer Controls -->
+            <div class="panel" id="layersPanel">
+                <div class="panel-header">
+                    <h4><i class="fas fa-layers"></i> Map Layers</h4>
+                </div>
+                <div class="panel-content">
+                    <div class="layer-control">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="beneficiariesLayer" checked onchange="toggleLayer('beneficiaries')">
+                            <span class="checkmark"></span>
+                            Beneficiaries
+                        </label>
+                    </div>
+                    
+                    <div class="layer-control">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="potentialAreasLayer" checked onchange="toggleLayer('potential')">
+                            <span class="checkmark"></span>
+                            Potential Areas
+                        </label>
+                    </div>
+                    
+                    <div class="layer-control">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="forestCoverLayer" onchange="toggleLayer('forest')">
+                            <span class="checkmark"></span>
+                            Forest Cover
+                        </label>
+                    </div>
+                    
+                    <div class="layer-control">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="tribalAreasLayer" onchange="toggleLayer('tribal')">
+                            <span class="checkmark"></span>
+                            Tribal Areas
+                        </label>
+                    </div>
+                    
+                    <div class="layer-control">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="boundariesLayer" onchange="toggleLayer('boundaries')">
+                            <span class="checkmark"></span>
+                            District Boundaries
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map" class="map"></div>
+            
+            <!-- Map Controls -->
+            <div class="map-controls">
+                <button class="map-control-btn" onclick="zoomToFit()" title="Zoom to Fit">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+                <button class="map-control-btn" onclick="resetView()" title="Reset View">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button class="map-control-btn" onclick="toggleFullscreen()" title="Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="map-search">
+                <input type="text" id="mapSearch" placeholder="Search locations, villages, or beneficiaries...">
+                <button onclick="performMapSearch()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div class="loading-indicator" id="loadingIndicator">
+                <div class="spinner"></div>
+                <span>Loading map data...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel" id="infoPanel">
+        <div class="info-panel-header">
+            <h4 id="infoPanelTitle">Information</h4>
+            <button class="close-btn" onclick="closeInfoPanel()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="info-panel-content" id="infoPanelContent">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Popup Template -->
+    <div id="popupTemplate" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h4 class="popup-title"></h4>
+                <span class="popup-type"></span>
+            </div>
+            <div class="popup-body">
+                <div class="popup-field">
+                    <label>Name:</label>
+                    <span class="popup-name"></span>
+                </div>
+                <div class="popup-field">
+                    <label>Village:</label>
+                    <span class="popup-village"></span>
+                </div>
+                <div class="popup-field">
+                    <label>District:</label>
+                    <span class="popup-district"></span>
+                </div>
+                <div class="popup-field">
+                    <label>Status:</label>
+                    <span class="popup-status"></span>
+                </div>
+                <div class="popup-field">
+                    <label>Area:</label>
+                    <span class="popup-area"></span>
+                </div>
+            </div>
+            <div class="popup-actions">
+                <button class="btn btn-sm btn-primary" onclick="viewDetails()">View Details</button>
+                <button class="btn btn-sm btn-outline" onclick="exportData()">Export</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/atlas.js') }}"></script>
+    <script>
+        // Set Mapbox token and initialize
+        mapboxgl.accessToken = '{{ mapbox_token }}';
+        
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing Atlas with token:', '{{ mapbox_token }}');
+            initializeMap();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Portal - Document Processing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ocr.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header compact">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                    <h1>OCR Portal - Document Processing</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="showHelp()">
+                        <i class="fas fa-question-circle"></i> Help
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="ocr-container">
+        <div class="container">
+            <!-- Progress Steps -->
+            <div class="progress-steps">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Upload Document</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Process & Extract</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Review & Edit</div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Export Data</div>
+                </div>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Upload FRA Document</h3>
+                    <p>Drag and drop your document here, or click to browse</p>
+                    <div class="supported-formats">
+                        <span>Supported formats: PDF, JPG, PNG, TIFF</span>
+                    </div>
+                    <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.tiff,.tif" multiple style="display: none;">
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-folder-open"></i> Choose Files
+                    </button>
+                </div>
+
+                <!-- File Preview -->
+                <div class="file-preview" id="filePreview" style="display: none;">
+                    <h4>Selected Files</h4>
+                    <div class="file-list" id="fileList"></div>
+                    <div class="upload-actions">
+                        <button class="btn btn-primary" onclick="processFiles()">
+                            <i class="fas fa-cogs"></i> Process Documents
+                        </button>
+                        <button class="btn btn-outline" onclick="clearFiles()">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processing Section -->
+            <div class="processing-section" id="processingSection" style="display: none;">
+                <div class="processing-status">
+                    <div class="processing-animation">
+                        <div class="spinner"></div>
+                    </div>
+                    <h3>Processing Documents...</h3>
+                    <p id="processingStatus">Initializing OCR engine...</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h3>Extraction Results</h3>
+                    <div class="results-actions">
+                        <button class="btn btn-outline" onclick="downloadJSON()">
+                            <i class="fas fa-download"></i> Download JSON
+                        </button>
+                        <button class="btn btn-outline" onclick="downloadCSV()">
+                            <i class="fas fa-file-csv"></i> Download CSV
+                        </button>
+                        <button class="btn btn-primary" onclick="processNewFiles()">
+                            <i class="fas fa-plus"></i> Process More Files
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Document Viewer -->
+            <div class="document-viewer" id="documentViewer" style="display: none;">
+                <div class="viewer-header">
+                    <h4 id="viewerTitle">Document Viewer</h4>
+                    <div class="viewer-controls">
+                        <button class="btn btn-sm btn-outline" onclick="zoomOut()">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <span id="zoomLevel">100%</span>
+                        <button class="btn btn-sm btn-outline" onclick="zoomIn()">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline" onclick="closeViewer()">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                </div>
+                <div class="viewer-content">
+                    <canvas id="documentCanvas"></canvas>
+                    <img id="documentImage" style="display: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>OCR Portal Help</h3>
+                <span class="close" onclick="closeHelp()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h4><i class="fas fa-file-upload"></i> Uploading Documents</h4>
+                    <ul>
+                        <li>Supported formats: PDF, JPG, PNG, TIFF</li>
+                        <li>Maximum file size: 16MB per file</li>
+                        <li>Multiple files can be processed at once</li>
+                        <li>Ensure documents are clear and readable</li>
+                    </ul>
+                </div>
+                
+                <div class="help-section">
+                    <h4><i class="fas fa-cogs"></i> Processing</h4>
+                    <ul>
+                        <li>OCR supports English, Hindi, and Odia languages</li>
+                        <li>Processing time depends on document size and quality</li>
+                        <li>The system automatically detects FRA-specific fields</li>
+                        <li>Results can be reviewed and edited before export</li>
+                    </ul>
+                </div>
+                
+                <div class="help-section">
+                    <h4><i class="fas fa-edit"></i> Editing Results</h4>
+                    <ul>
+                        <li>Click on any extracted field to edit</li>
+                        <li>Confidence scores indicate extraction accuracy</li>
+                        <li>Red highlighting indicates low confidence fields</li>
+                        <li>All changes are saved automatically</li>
+                    </ul>
+                </div>
+                
+                <div class="help-section">
+                    <h4><i class="fas fa-download"></i> Exporting Data</h4>
+                    <ul>
+                        <li>Export individual documents or batch results</li>
+                        <li>Available formats: JSON, CSV, Excel</li>
+                        <li>Exported data includes all extracted fields</li>
+                        <li>Metadata includes processing timestamps and confidence scores</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Extracted Data</h3>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="editName">Name</label>
+                            <input type="text" id="editName" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editFatherName">Father's Name</label>
+                            <input type="text" id="editFatherName" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editVillage">Village</label>
+                            <input type="text" id="editVillage" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editDistrict">District</label>
+                            <input type="text" id="editDistrict" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editSurveyNumber">Survey Number</label>
+                            <input type="text" id="editSurveyNumber" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editArea">Area (Acres)</label>
+                            <input type="number" id="editArea" class="form-control" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editClaimType">Claim Type</label>
+                            <select id="editClaimType" class="form-control">
+                                <option value="">Select Claim Type</option>
+                                <option value="Individual Forest Rights">Individual Forest Rights</option>
+                                <option value="Community Forest Rights">Community Forest Rights</option>
+                                <option value="Community Forest Resource Rights">Community Forest Resource Rights</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editDate">Date</label>
+                            <input type="date" id="editDate" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" onclick="saveEdits()">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="closeEditModal()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/ocr.js') }}"></script>
+</body>
+</html>

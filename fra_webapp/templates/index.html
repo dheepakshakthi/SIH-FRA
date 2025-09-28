@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRA Atlas - Forest Rights Act Implementation Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-info">
+                    <span><i class="fas fa-envelope"></i> fraatlas@gov.in</span>
+                    <span><i class="fas fa-phone"></i> +91-674-2536363</span>
+                    <span><i class="fas fa-clock"></i> Last Updated: {{ current_date }}</span>
+                </div>
+                <div class="header-actions">
+                    <button class="skip-content">Skip to Main Content</button>
+                    <div class="accessibility">
+                        <button class="btn-accessibility" title="Accessibility Options">
+                            <i class="fas fa-universal-access"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-main">
+            <div class="container">
+                <div class="logo-section">
+                    <img src="{{ url_for('static', filename='images/odisha_logo.png') }}" alt="Government of Odisha" class="govt-logo">
+                    <div class="title-section">
+                        <h1>Forest Rights Act (FRA) Atlas</h1>
+                        <p>AI-powered WebGIS Decision Support System</p>
+                        <p class="dept-name">Ministry of Tribal Affairs, Government of India</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <img src="{{ url_for('static', filename='images/digital_india.png') }}" alt="Digital India" class="digital-india-logo">
+                </div>
+            </div>
+        </div>
+        
+        <nav class="navbar">
+            <div class="container">
+                <ul class="nav-menu">
+                    <li><a href="/" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/atlas"><i class="fas fa-map"></i> FRA Atlas</a></li>
+                    <li><a href="/ocr"><i class="fas fa-file-text"></i> OCR Portal</a></li>
+                    <li><a href="/dss"><i class="fas fa-brain"></i> Decision Support</a></li>
+                    <li class="dropdown">
+                        <a href="#"><i class="fas fa-info-circle"></i> About <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#about-fra">About FRA</a></li>
+                            <li><a href="#implementation">Implementation</a></li>
+                            <li><a href="#guidelines">Guidelines</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#contact"><i class="fas fa-phone"></i> Contact</a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h2>Empowering Forest Communities</h2>
+                <p>Comprehensive digital platform for Forest Rights Act implementation, monitoring, and decision support across Odisha</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-beneficiaries">0</div>
+                        <div class="stat-label">Total Beneficiaries</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-districts">0</div>
+                        <div class="stat-label">Districts Covered</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-area">0</div>
+                        <div class="stat-label">Area (Acres)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="approval-rate">0%</div>
+                        <div class="stat-label">Approval Rate</div>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="/atlas" class="btn btn-primary">
+                        <i class="fas fa-map"></i> Explore Atlas
+                    </a>
+                    <a href="/dss" class="btn btn-secondary">
+                        <i class="fas fa-brain"></i> Decision Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <h2 class="section-title">Platform Features</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Interactive FRA Atlas</h3>
+                    <p>Comprehensive mapping of FRA beneficiaries, forest cover, and potential areas for implementation across Odisha districts.</p>
+                    <a href="/atlas" class="service-link">Explore Atlas <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>OCR Document Processing</h3>
+                    <p>AI-powered optical character recognition for digitizing legacy FRA documents and converting paper records to digital format.</p>
+                    <a href="/ocr" class="service-link">Process Documents <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Decision Support System</h3>
+                    <p>AI-powered eligibility assessment and recommendation engine for FRA applications and community development planning.</p>
+                    <a href="/dss" class="service-link">Access DSS <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analytics & Reporting</h3>
+                    <p>Comprehensive analytics dashboard with real-time statistics, progress tracking, and detailed implementation reports.</p>
+                    <a href="#analytics" class="service-link">View Analytics <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Access Section -->
+    <section class="quick-access">
+        <div class="container">
+            <h2 class="section-title">Quick Access</h2>
+            <div class="quick-access-grid">
+                <div class="quick-access-item">
+                    <i class="fas fa-file-upload"></i>
+                    <h4>Upload Document</h4>
+                    <p>Process FRA documents with OCR</p>
+                    <a href="/ocr" class="btn btn-outline">Upload Now</a>
+                </div>
+                
+                <div class="quick-access-item">
+                    <i class="fas fa-search"></i>
+                    <h4>Search Beneficiaries</h4>
+                    <p>Find beneficiary information</p>
+                    <button class="btn btn-outline" onclick="openSearchModal()">Search</button>
+                </div>
+                
+                <div class="quick-access-item">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Check Eligibility</h4>
+                    <p>Assess FRA eligibility criteria</p>
+                    <a href="/dss" class="btn btn-outline">Check Now</a>
+                </div>
+                
+                <div class="quick-access-item">
+                    <i class="fas fa-download"></i>
+                    <h4>Download Reports</h4>
+                    <p>Export district-wise data</p>
+                    <button class="btn btn-outline" onclick="openDownloadModal()">Download</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Updates -->
+    <section class="updates">
+        <div class="container">
+            <h2 class="section-title">Latest Updates</h2>
+            <div class="updates-grid">
+                <div class="update-item">
+                    <div class="update-date">
+                        <div class="date-day">28</div>
+                        <div class="date-month">Sep</div>
+                    </div>
+                    <div class="update-content">
+                        <h4>FRA Atlas Platform Launch</h4>
+                        <p>AI-powered FRA Atlas and WebGIS Decision Support System launched for comprehensive forest rights monitoring.</p>
+                    </div>
+                </div>
+                
+                <div class="update-item">
+                    <div class="update-date">
+                        <div class="date-day">25</div>
+                        <div class="date-month">Sep</div>
+                    </div>
+                    <div class="update-content">
+                        <h4>OCR Portal Enhanced</h4>
+                        <p>Improved accuracy for multilingual document processing with support for Hindi and Odia languages.</p>
+                    </div>
+                </div>
+                
+                <div class="update-item">
+                    <div class="update-date">
+                        <div class="date-day">20</div>
+                        <div class="date-month">Sep</div>
+                    </div>
+                    <div class="update-content">
+                        <h4>New Districts Added</h4>
+                        <p>Extended coverage to include comprehensive data from all 30 districts of Odisha state.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/atlas">FRA Atlas</a></li>
+                        <li><a href="/ocr">OCR Portal</a></li>
+                        <li><a href="/dss">Decision Support</a></li>
+                        <li><a href="#guidelines">Guidelines</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#fra-act">FRA Act & Rules</a></li>
+                        <li><a href="#implementation">Implementation Guide</a></li>
+                        <li><a href="#training">Training Materials</a></li>
+                        <li><a href="#faqs">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Information</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Secretariat, Bhubaneswar, Odisha</p>
+                        <p><i class="fas fa-phone"></i> +91-674-2536363</p>
+                        <p><i class="fas fa-envelope"></i> fraatlas@gov.in</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 Government of Odisha. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#privacy">Privacy Policy</a>
+                        <a href="#terms">Terms of Use</a>
+                        <a href="#accessibility">Accessibility</a>
+                        <a href="#sitemap">Sitemap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Search Beneficiaries</h3>
+                <span class="close" onclick="closeSearchModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="searchForm">
+                    <div class="form-group">
+                        <label for="searchQuery">Search Query</label>
+                        <input type="text" id="searchQuery" placeholder="Enter name, village, or survey number">
+                    </div>
+                    <div class="form-group">
+                        <label for="searchDistrict">District (Optional)</label>
+                        <select id="searchDistrict">
+                            <option value="">All Districts</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div id="downloadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Download Reports</h3>
+                <span class="close" onclick="closeDownloadModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="downloadForm">
+                    <div class="form-group">
+                        <label for="downloadDistrict">Select District</label>
+                        <select id="downloadDistrict" required>
+                            <option value="">Select District</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="downloadFormat">Format</label>
+                        <select id="downloadFormat" required>
+                            <option value="csv">CSV</option>
+                            <option value="geojson">GeoJSON</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Download</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
