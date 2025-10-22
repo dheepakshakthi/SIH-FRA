@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility and Viability Visualization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            /* Set a fixed size for consistent screenshotting for a 16:9 slide */
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 100%;
+            height: 100%;
+            background-color: #f8fafc; /* Slate-50 */
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0; /* Slate-200 */
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #1e293b; /* Slate-800 */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .sih-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sih-logo span {
+            font-weight: 600;
+            color: #475569;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 1.5rem;
+            flex-grow: 1;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        .card-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #475569;
+        }
+        .card-content li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .card-content li svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        /* Color Overrides */
+        #tech-feasibility .card-icon { background-color: #dbeafe; } /* Blue-100 */
+        #tech-feasibility .card-icon svg { color: #2563eb; } /* Blue-600 */
+        #tech-feasibility li svg { color: #2563eb; }
+
+        #impl-viability .card-icon { background-color: #dcfce7; } /* Green-100 */
+        #impl-viability .card-icon svg { color: #16a34a; } /* Green-600 */
+        #impl-viability li svg { color: #16a34a; }
+
+        #risk-assessment .card-icon { background-color: #ffedd5; } /* Orange-100 */
+        #risk-assessment .card-icon svg { color: #f97316; } /* Orange-600 */
+        #risk-assessment li svg { color: #f97316; }
+
+        #financial-viability .card-icon { background-color: #e0e7ff; } /* Indigo-100 */
+        #financial-viability .card-icon svg { color: #4f46e5; } /* Indigo-600 */
+        #financial-viability li svg { color: #4f46e5; }
+        
+        .cost-comparison {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        .cost-item {
+            text-align: center;
+        }
+        .cost-item .label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #64748b;
+        }
+        .cost-item .value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .cost-item .value.high { color: #dc2626; } /* Red-600 */
+        .cost-item .value.low { color: #16a34a; } /* Green-600 */
+
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <header class="header">
+            <h1>Feasibility & Viability</h1>
+            <div class="sih-logo">
+                 <svg width="60" height="60" viewBox="0 0 355 355" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M177.531 35.0833C152.92 35.0833 129.358 41.571 109.288 53.6841C89.2183 65.7972 73.4936 83.0539 63.8437 103.543C54.1938 124.032 51.0543 146.903 54.8876 169.176C58.7208 191.449 69.3475 212.273 85.3473 229.431C85.4116 229.491 85.4771 229.549 85.5439 229.606L85.5619 229.623C101.559 246.786 122.392 259.412 144.69 265.25C167.143 271.134 190.963 269.833 212.923 261.545C234.883 253.257 254.148 238.358 268.324 218.847C282.5 199.336 291.007 175.989 292.813 151.365V151.272L292.831 151.087C293.475 142.174 292.747 133.243 290.686 124.686C289.816 120.936 287.653 117.846 284.582 115.82C281.511 113.794 277.726 112.946 273.978 113.431C266.974 114.339 261.666 119.897 260.771 126.901C259.433 137.388 261.739 148.067 267.319 156.924C260.638 178.271 247.015 196.732 228.694 209.021C210.373 221.31 188.402 226.708 165.922 224.524C143.442 222.34 121.948 212.673 105.109 197.106C88.2707 181.539 77.1085 160.914 73.4983 138.528C69.8881 116.141 74.0264 93.3087 85.1614 73.8055C96.2965 54.3023 113.722 39.3892 134.782 31.4279C155.842 23.4665 179.31 22.956 201.218 29.9963L202.134 30.2929C209.282 32.5857 217.213 30.7327 222.71 25.2359C228.207 19.7392 230.059 11.808 227.767 4.6601L227.47 3.74375C227.378 3.4731 227.275 3.20963 227.161 2.95333C226.433 1.25963 224.545 -0.0177344 222.618 0.177266C221.468 0.301562 220.402 0.8175 219.605 1.61437C218.809 2.41125 218.328 3.44094 218.239 4.54219L218.104 6.225C218.104 6.25719 218.102 6.28937 218.1 6.32156C193.361 -2.03719 164.537 -1.03719 139.349 7.79469C114.161 16.6266 93.7578 32.9066 79.9484 54.6738C66.1391 76.4409 59.5094 102.613 60.9453 129.213C62.3813 155.813 71.8297 181.658 88.086 203.255C104.342 224.851 126.652 241.272 151.902 249.983C177.152 258.694 204.283 259.213 229.822 251.423C255.361 243.633 277.994 227.859 294.511 206.518L294.57 206.438C294.611 206.377 294.65 206.316 294.688 206.255C311.205 184.914 319.989 159.544 320.007 133.081C319.97 106.634 311.189 81.2889 294.688 59.9718C288.583 51.9843 281.089 45.2421 272.636 40.1983C264.183 35.1546 254.954 31.9366 245.454 30.7687C224.227 28.1437 201.298 31.2531 177.531 35.0833Z" fill="#4CAF50"></path><path d="M227.509 4.3125C229.802 11.4603 227.949 19.3916 222.452 24.8883C216.955 30.385 209.024 32.2379 201.876 29.9452L201.523 29.8291C179.615 22.7887 156.139 23.2992 135.079 31.2606C114.019 39.222 96.5932 54.135 85.4582 73.6383C74.3232 93.1414 70.1849 115.974 73.7951 138.36C77.4053 160.746 88.5674 181.371 105.406 196.938C122.245 212.505 143.739 222.172 166.219 224.356C188.699 226.54 210.669 221.142 229.006 208.853C247.327 196.564 260.95 178.103 267.631 156.756C262.051 147.9 259.745 137.221 261.083 126.733C261.978 119.729 267.286 114.171 274.29 113.263C278.038 112.778 281.823 113.626 284.894 115.652C287.965 117.678 290.128 120.768 290.998 124.518C293.059 133.075 293.787 142.006 293.143 150.919L293.125 151.104V151.197C291.319 175.821 282.812 199.168 268.636 218.679C254.46 238.19 235.195 253.089 213.235 261.377C191.275 269.665 167.455 270.966 145.002 265.082C122.694 259.244 101.861 246.618 85.8643 229.455L85.8463 229.438C70.0157 212.43 59.5167 191.71 55.6731 169.49C51.8295 147.271 54.919 124.423 64.5178 103.923C74.1167 83.4226 89.7915 66.1432 109.811 54.0049C129.831 41.8665 153.337 35.3333 177.892 35.3333C201.659 31.5031 224.588 28.3937 245.815 30.9937C255.315 32.1616 264.544 35.3797 273.004 40.4234C281.457 45.4671 288.951 52.2093 295.056 60.1969C311.557 81.5139 320.338 106.859 320.319 133.306C320.302 159.769 311.518 185.139 294.991 206.48L294.931 206.56C278.414 227.89 255.781 243.664 230.242 251.454C204.703 259.244 177.572 258.725 152.322 250.014C127.072 241.303 104.762 224.882 88.5057 203.285C72.2494 181.688 62.7901 155.843 61.3651 129.243C59.9292 102.643 66.5588 76.4709 80.3682 54.7038C94.1776 32.9366 114.581 16.6566 139.769 7.82469C164.957 -1.00719 193.781 -1.99656 218.52 6.35219L218.655 8.035C218.744 9.13625 219.225 10.1659 220.022 10.9628C220.818 11.7597 221.884 12.2756 223.034 12.3999C224.961 12.1934 226.849 10.916 227.577 9.22234C227.691 8.96609 227.794 8.70266 227.886 8.43203L228.183 7.51562C228.183 7.51562 227.509 4.3125 227.509 4.3125Z" fill="#FF9800"></path></svg>
+                <span><b>Smart India</b> Hackathon <b>2025</b></span>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="card" id="tech-feasibility">
+                <div class="card-header">
+                    <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg></div>
+                    <h2 class="card-title">Technical Feasibility</h2>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>Proven Stack:</b> Uses reliable open-source tech (Python, PostgreSQL).</span></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>Scalable Architecture:</b> Modular design ready for state-wide deployment.</span></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>Integration Ready:</b> Built to WCAG standards for government portals.</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card" id="impl-viability">
+                <div class="card-header">
+                    <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.82m5.84-2.56a16.5 16.5 0 10-18.27 12.11A16.43 16.43 0 0015.59 14.37z" /></svg></div>
+                    <h2 class="card-title">Implementation Viability</h2>
+                </div>
+                <div class="card-content">
+                    <ul>
+                         <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>Minimal Resources:</b> Standard web hosting and common skill sets required.</span></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>Phased Rollout:</b> Cloud-ready for a progressive district-to-state deployment.</span></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>Sustainable:</b> Low maintenance costs due to open-source stack.</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card" id="risk-assessment">
+                <div class="card-header">
+                    <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg></div>
+                    <h2 class="card-title">Risk Assessment</h2>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>Low Technical Risk:</b> Uses established, well-documented technologies.</span></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>Manageable Operational Risk:</b> Fits existing IT infrastructure and skills.</span></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><b>High Success Probability:</b> Aligns with government goals and user needs.</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card" id="financial-viability">
+                <div class="card-header">
+                    <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75-.75v-.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
+                    <h2 class="card-title">Financial Viability (ROI)</h2>
+                </div>
+                <div class="card-content">
+                     <p class="text-sm text-gray-600 mb-2">Our platform offers a massive return on investment by replacing inefficient manual processes with a streamlined, one-time digital solution.</p>
+                     <div class="cost-comparison">
+                        <div class="cost-item">
+                            <div class="label">Current Manual System</div>
+                            <div class="value high">High & Recurring</div>
+                            <div class="text-xs text-gray-500">(Manpower, Paper, Storage, Delays)</div>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-400">vs</div>
+                         <div class="cost-item">
+                            <div class="label">Our Digital Platform</div>
+                            <div class="value low">Low & Fixed</div>
+                             <div class="text-xs text-gray-500">(Cloud Hosting, Minimal Maintenance)</div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
